@@ -207,7 +207,32 @@ main {
 .article .byline {
   font-size: 0.85rem;
   color: #6b756f;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.article .powered-by {
+  font-size: 0.85rem;
+  color: var(--brick);
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+}
+
+.share-button {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.6rem 1.4rem;
+  background: var(--forest);
+  color: var(--ivory);
+  border: none;
+  border-radius: 2px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.share-button:hover {
+  background: var(--forest-dark);
 }
 
 .article img {

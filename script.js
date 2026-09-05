@@ -61,6 +61,8 @@ function renderHome(posts) {
 }
 
 function renderArticle(post) {
+  const shareUrl = window.location.origin + window.location.pathname + '#/post/' + post.id;
+
   app.innerHTML = `
     <article class="article">
       <a class="back-link" href="#/">&larr; Back to all stories</a>
@@ -68,6 +70,7 @@ function renderArticle(post) {
       <h1>${post.title}</h1>
       ${post.subtitle ? `<p class="subtitle">${post.subtitle}</p>` : ''}
       <p class="byline">${post.author} &middot; ${formatDate(post.date)}${post.location ? ' &middot; ' + post.location : ''}</p>
+      ${post.poweredBy ? `<p class="powered-by">${post.poweredBy}</p>` : ''}
       <img src="${post.image}" alt="${post.title}" />
       ${post.imageCaption ? `<p class="image-caption">${post.imageCaption}</p>` : ''}
       <div class="body">
@@ -83,9 +86,30 @@ function renderArticle(post) {
           `).join('')}
         </div>
       ` : ''}
+      <button class="share-button" id="share-button" data-url="${shareUrl}" data-title="${post.title}">Share this story</button>
     </article>
   `;
   window.scrollTo(0, 0);
+
+  const shareButton = document.getElementById('share-button');
+  shareButton.addEventListener('click', () => handleShare(shareButton.dataset.url, shareButton.dataset.title));
+}
+
+async function handleShare(url, title) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, url });
+    } catch (err) {
+      // user cancelled the share sheet — do nothing
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('Link copied! You can now paste it anywhere.');
+    } catch (err) {
+      prompt('Copy this link to share:', url);
+    }
+  }
 }
 
 function renderError(message) {
